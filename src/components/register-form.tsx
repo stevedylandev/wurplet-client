@@ -64,7 +64,7 @@ export function RegisterForm({
     async function getAddresses() {
       if (context?.user.fid) {
         try {
-          const verificationRequest = await fetch(`https://hub.pinata.cloud/v1/verificationsByFid?fid=${context?.user.fid}`)
+          const verificationRequest = await fetch(`https://hub.farcaster.standardcrypto.vc:2281/v1/verificationsByFid?fid=${context?.user.fid}`)
           const verifications = await verificationRequest.json()
           const rawAddresses = []
           for (const message of verifications.messages) {
