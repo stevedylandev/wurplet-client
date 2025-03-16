@@ -136,7 +136,7 @@ export function RegisterForm({
         title: "Error",
         description: gatewayError.message === 'Conflict'
           ? 'Somebody already registered that name'
-          : 'Something went wrong processing your request',
+          : `Something went wrong: ${gatewayError}`,
       })
 
     }
