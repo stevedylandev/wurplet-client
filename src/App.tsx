@@ -94,7 +94,7 @@ function App() {
         <div className='flex flex-col items-center justify-center min-h-screen gap-3'>
           <h1 className='text-5xl font-bold'>Wurplet.eth</h1>
           <h3 className='text-center'>A free ENS for your Wurplet <br />...Warplet?... you know</h3>
-          <Button onClick={() => window.open('https://warpcast.com', '_blank')}>Open in Warpcast</Button>
+          <Button onClick={() => window.open('https://warpcast.com/~/frames/launch?domain=wurplet.xyz', '_blank')}>Open in Warpcast</Button>
         </div>
       )
     }
