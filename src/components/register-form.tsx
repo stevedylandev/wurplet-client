@@ -185,7 +185,11 @@ export function RegisterForm({
       )}
 
       {isInitialized && (
-        <Button onClick={async () => await sdk.actions.openUrl(`https://app.ens.domains/${name}.wurplet.eth`)}>View Name on ENS</Button>
+        <>
+          <Button onClick={async () => await sdk.actions.openUrl(`https://app.ens.domains/${name}.wurplet.eth`)}>View Name on ENS</Button>
+          <Button onClick={async () => await sdk.actions.openUrl(`https://warpcast.com/~/compose?text=Check%20out%20my%20Wurplet%20ENS!%0A%0A${name}.wurplet.eth%0A%0AGet%20yours%20now%3A%20https%3A%2F%2Fwurplet.xyz&embeds%5B%5D=https%3A%2F%2Fwurplet.xyz
+`)}>Share</Button>
+        </>
       )}
 
       {gatewayError && (
