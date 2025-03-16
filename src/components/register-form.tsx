@@ -68,7 +68,10 @@ export function RegisterForm({
           const verifications = await verificationRequest.json()
           const rawAddresses = []
           for (const message of verifications.messages) {
-            rawAddresses.push(message?.data?.verificationAddEthAddressBody?.address)
+            // Only include Ethereum addresses, not Solana
+            if (message?.data?.verificationAddEthAddressBody?.protocol === "PROTOCOL_ETHEREUM") {
+              rawAddresses.push(message?.data?.verificationAddEthAddressBody?.address)
+            }
           }
           setAddresses(rawAddresses.filter(Boolean))
         } catch (error) {
@@ -84,6 +87,7 @@ export function RegisterForm({
     owner: address!,
     addresses: {
       '60': selectedAddress,
+      '2147492101': selectedAddress,
     },
   }
 
