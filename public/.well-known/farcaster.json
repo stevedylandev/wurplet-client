@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjYwMjMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0NTYxMzExNjFmODNDN0Q3ZkRBMTViMzJhNWY3QzIxRkQ0RTI3RTk2In0",
+    "payload": "eyJkb21haW4iOiJ3dXJwbGV0Lnh5eiJ9",
+    "signature": "MHg1ZDRmYjc4ZDQyYTFjZTZjZDUxYzgzOGI1YjllMDQzYmFhNTNiNzgwODlhYjkwOTU4YjFiZGM2OTBmZDI2MTk1MjlmOWZiZjJiYmI2ZTc3MmRjOGVjMTZjN2Y4OTRkMjVmMzNhMGFmNTZlZWE0YTc5YjcxYTliZmM2NDUzZjIzYTFj"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Wurplet.eth",
+    "iconUrl": "https://wurplet.xyz/icon.png",
+    "homeUrl": "https://wurplet.xyz",
+    "imageUrl": "https://wurplet.xyz/frame.png",
+    "buttonTitle": "Claim",
+    "splashImageUrl": "https://wurplet.xyz/icon.png",
+    "splashBackgroundColor": "#272733"
+  }
+}
