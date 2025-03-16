@@ -184,6 +184,10 @@ export function RegisterForm({
         </Button>
       )}
 
+      {isInitialized && (
+        <Button onClick={async () => await sdk.actions.openUrl(`https://app.ens.domains/${name}.wurplet.eth`)}>View Name on ENS</Button>
+      )}
+
       {gatewayError && (
         <div className="text-red-500 text-sm mt-2">
           {gatewayError.message === 'Conflict'

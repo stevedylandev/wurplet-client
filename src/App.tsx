@@ -88,6 +88,19 @@ function App() {
     return <div>Loading..</div>
   }
 
+  if (!context) {
+    if (!context) {
+      return (
+        <div className='flex flex-col items-center justify-center min-h-screen gap-3'>
+          <h1 className='text-5xl font-bold'>Wurplet.eth</h1>
+          <h3 className='text-center'>A free ENS for your Wurplet <br />...Warplet?... you know</h3>
+          <Button onClick={() => window.open('https://warpcast.com', '_blank')}>Open in Warpcast</Button>
+        </div>
+      )
+    }
+
+  }
+
   return (
     <div className='flex flex-col items-center justify-center min-h-screen gap-3'>
       <Dialog>
@@ -115,8 +128,8 @@ function App() {
 
         {message && signature && (
           <>
+            <h1 className='text-5xl font-bold mb-8'>Wurplet.eth</h1>
             <Marquee items={[`${name}.wurplet.eth`]} />
-
             {initialized ? (
               <div className="mt-4 text-center">
                 <p className="font-medium">Your ENS points to:</p>
