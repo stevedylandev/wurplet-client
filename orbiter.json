@@ -1,0 +1,6 @@
+{
+  "siteId": "e7d88fc7-1cc7-4ccc-831f-a32844eb77e0",
+  "domain": "wurplet",
+  "buildCommand": "npm run build",
+  "buildDir": "dist"
+}
