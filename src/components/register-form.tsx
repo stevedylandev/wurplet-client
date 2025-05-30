@@ -68,14 +68,17 @@ export function RegisterForm({
             `https://hub.pinata.cloud/v1/verificationsByFid?fid=${context?.user.fid}`,
           );
           const verifications = await verificationRequest.json();
-          const rawAddresses = [];
-          for (const message of verifications.messages) {
-            // Only include Ethereum addresses, not Solana
-            if (message?.data?.verificationAddEthAddressBody?.protocol === "PROTOCOL_ETHEREUM") {
-              rawAddresses.push(message?.data?.verificationAddEthAddressBody?.address);
-            }
-          }
-          setAddresses(rawAddresses.filter(Boolean));
+
+          const ethereumAddresses =
+            verifications.messages
+              ?.filter(
+                (message: any) =>
+                  message?.data?.verificationAddAddressBody?.protocol === "PROTOCOL_ETHEREUM",
+              )
+              .map((message: any) => message.data.verificationAddAddressBody.address)
+              .filter(Boolean) || [];
+
+          setAddresses(ethereumAddresses);
         } catch (error) {
           console.error("Error fetching addresses:", error);
         }
