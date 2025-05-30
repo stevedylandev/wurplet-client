@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useAccount, useSignMessage } from 'wagmi'
-import { WorkerRequest } from '../types'
-import { useFetch } from '../hooks/useFetch'
-import { Context } from '@farcaster/frame-sdk';
-import sdk from '@farcaster/frame-sdk';
-import { Button } from '../components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useAccount, useSignMessage } from "wagmi";
+import { WorkerRequest } from "../types";
+import { useFetch } from "../hooks/useFetch";
+import { Context } from "@farcaster/frame-sdk";
+import sdk from "@farcaster/frame-sdk";
+import { Button } from "../components/ui/button";
+import { Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -14,9 +14,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { useToast } from '@/hooks/use-toast'
-import { truncateAddress } from '@/lib/utils';
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { truncateAddress } from "@/lib/utils";
 
 interface RegisterFormProps {
   nonce: string;
@@ -35,18 +35,18 @@ export function RegisterForm({
   name,
   setInitialized,
   setAddress,
-  isInitialized
+  isInitialized,
 }: RegisterFormProps) {
-  const { address } = useAccount()
+  const { address } = useAccount();
 
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
-  const [addresses, setAddresses] = useState<string[] | undefined>([])
-  const [selectedAddress, setSelectedAddress] = useState<string>()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
+  const [addresses, setAddresses] = useState<string[] | undefined>([]);
+  const [selectedAddress, setSelectedAddress] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const { data, signMessage } = useSignMessage()
+  const { data, signMessage } = useSignMessage();
 
   useEffect(() => {
     const load = async () => {
@@ -64,32 +64,34 @@ export function RegisterForm({
     async function getAddresses() {
       if (context?.user.fid) {
         try {
-          const verificationRequest = await fetch(`https://hub.farcaster.standardcrypto.vc:2281/v1/verificationsByFid?fid=${context?.user.fid}`)
-          const verifications = await verificationRequest.json()
-          const rawAddresses = []
+          const verificationRequest = await fetch(
+            `https://hub.pinata.cloud/v1/verificationsByFid?fid=${context?.user.fid}`,
+          );
+          const verifications = await verificationRequest.json();
+          const rawAddresses = [];
           for (const message of verifications.messages) {
             // Only include Ethereum addresses, not Solana
             if (message?.data?.verificationAddEthAddressBody?.protocol === "PROTOCOL_ETHEREUM") {
-              rawAddresses.push(message?.data?.verificationAddEthAddressBody?.address)
+              rawAddresses.push(message?.data?.verificationAddEthAddressBody?.address);
             }
           }
-          setAddresses(rawAddresses.filter(Boolean))
+          setAddresses(rawAddresses.filter(Boolean));
         } catch (error) {
-          console.error("Error fetching addresses:", error)
+          console.error("Error fetching addresses:", error);
         }
       }
     }
-    getAddresses()
+    getAddresses();
   }, [context?.user.fid]);
 
-  const nameData: WorkerRequest['signature']['message'] = {
+  const nameData: WorkerRequest["signature"]["message"] = {
     name: `${name}.wurplet.eth`,
     owner: address!,
     addresses: {
-      '60': selectedAddress,
-      '2147492101': selectedAddress,
+      "60": selectedAddress,
+      "2147492101": selectedAddress,
     },
-  }
+  };
 
   const requestBody: WorkerRequest = {
     signature: {
@@ -99,20 +101,20 @@ export function RegisterForm({
     expiration: new Date().getTime() + 60 * 60,
     siwfSignature: farcasterSignature,
     siwfNonce: nonce,
-    siwfMessage: message
-  }
+    siwfMessage: message,
+  };
 
   const {
     data: gatewayData,
     error: gatewayError,
     isLoading: gatewayIsLoading,
-  } = useFetch(data && 'https://wurplet-server.stevedsimkins.workers.dev/set', {
-    method: 'POST',
+  } = useFetch(data && "https://wurplet-server.stevedsimkins.workers.dev/set", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(requestBody),
-  })
+  });
 
   useEffect(() => {
     if (gatewayData) {
@@ -127,20 +129,28 @@ export function RegisterForm({
         description: isInitialized
           ? `${name}.wurplet.eth has been updated to point to ${truncateAddress(selectedAddress)}`
           : `${name}.wurplet.eth has been claimed successfully!`,
-      })
-
+      });
     } else if (gatewayError) {
       setIsSubmitting(false);
       toast({
         variant: "destructive",
         title: "Error",
-        description: gatewayError.message === 'Conflict'
-          ? 'Somebody already registered that name'
-          : `Something went wrong: ${gatewayError}`,
-      })
-
+        description:
+          gatewayError.message === "Conflict"
+            ? "Somebody already registered that name"
+            : `Something went wrong: ${gatewayError}`,
+      });
     }
-  }, [gatewayData, gatewayError, selectedAddress, setAddress, setInitialized, name, isInitialized, toast]);
+  }, [
+    gatewayData,
+    gatewayError,
+    selectedAddress,
+    setAddress,
+    setInitialized,
+    name,
+    isInitialized,
+    toast,
+  ]);
 
   const handleSubmit = () => {
     if (!selectedAddress) {
@@ -149,15 +159,18 @@ export function RegisterForm({
     }
     setIsSubmitting(true);
     signMessage({ message: JSON.stringify(nameData) });
-  }
+  };
 
   if (!isSDKLoaded) {
-    return <div>Loading..</div>
+    return <div>Loading..</div>;
   }
 
   return (
-    <div className='flex flex-col items-center justify-center h-full gap-3'>
-      <Select onValueChange={(value) => setSelectedAddress(value)} disabled={isSubmitting || gatewayIsLoading}>
+    <div className="flex flex-col items-center justify-center h-full gap-3">
+      <Select
+        onValueChange={(value) => setSelectedAddress(value)}
+        disabled={isSubmitting || gatewayIsLoading}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select an address" />
         </SelectTrigger>
@@ -175,7 +188,7 @@ export function RegisterForm({
 
       {isSubmitting || gatewayIsLoading ? (
         <Button disabled>
-          <Loader2 className='animate-spin' />
+          <Loader2 className="animate-spin" />
           {isInitialized ? "Updating..." : "Claiming..."}
         </Button>
       ) : (
@@ -186,19 +199,32 @@ export function RegisterForm({
 
       {isInitialized && (
         <>
-          <Button onClick={async () => await sdk.actions.openUrl(`https://app.ens.domains/${name}.wurplet.eth`)}>View Name on ENS</Button>
-          <Button onClick={async () => await sdk.actions.openUrl(`https://warpcast.com/~/compose?text=Check%20out%20my%20Wurplet%20ENS!%0A%0A${name}.wurplet.eth%0A%0AGet%20yours%20now%3A%20https%3A%2F%2Fwurplet.xyz&embeds%5B%5D=https%3A%2F%2Fwurplet.xyz
-`)}>Share</Button>
+          <Button
+            onClick={async () =>
+              await sdk.actions.openUrl(`https://app.ens.domains/${name}.wurplet.eth`)
+            }
+          >
+            View Name on ENS
+          </Button>
+          <Button
+            onClick={async () =>
+              await sdk.actions
+                .openUrl(`https://warpcast.com/~/compose?text=Check%20out%20my%20Wurplet%20ENS!%0A%0A${name}.wurplet.eth%0A%0AGet%20yours%20now%3A%20https%3A%2F%2Fwurplet.xyz&embeds%5B%5D=https%3A%2F%2Fwurplet.xyz
+`)
+            }
+          >
+            Share
+          </Button>
         </>
       )}
 
       {gatewayError && (
         <div className="text-red-500 text-sm mt-2">
-          {gatewayError.message === 'Conflict'
-            ? 'Somebody already registered that name'
-            : 'Something went wrong'}
+          {gatewayError.message === "Conflict"
+            ? "Somebody already registered that name"
+            : "Something went wrong"}
         </div>
       )}
     </div>
-  )
+  );
 }
